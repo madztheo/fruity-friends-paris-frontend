@@ -1,0 +1,24 @@
+@import "../../styles/constants.scss";
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-around;
+  width: 100%;
+  padding: 20px 0;
+  .button {
+    &.active {
+      .button__icon {
+        fill: $primaryColor;
+      }
+    }
+    .button__icon {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      min-height: 30px;
+      fill: $darkGray;
+    }
+  }
+}

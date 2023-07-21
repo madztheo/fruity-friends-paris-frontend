@@ -1,0 +1,22 @@
+@import "../constants.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  .content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    justify-content: center;
+    .title {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: $darkGray;
+      margin: 0;
+    }
+  }
+}

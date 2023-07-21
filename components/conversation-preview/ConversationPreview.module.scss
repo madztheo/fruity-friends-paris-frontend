@@ -1,0 +1,43 @@
+@import "../../styles/constants.scss";
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  transition: 200ms ease;
+  border-radius: 25px;
+  margin: 0 -20px;
+  &:active {
+    transform: scale(0.95);
+    background-color: change-color($primaryColor, $alpha: 0.1);
+  }
+  .profile__pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: $secondaryColor;
+    overflow: hidden;
+    position: relative;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 2px;
+    .name {
+      font-size: 1em;
+      font-weight: 700;
+      color: $primaryColor;
+      margin: 0;
+      line-height: 1em;
+    }
+    .message {
+      font-size: 0.8em;
+      font-weight: 400;
+      color: $secondaryColor;
+      margin: 0;
+      line-height: 1em;
+    }
+  }
+}

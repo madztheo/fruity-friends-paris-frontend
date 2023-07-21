@@ -65,7 +65,6 @@ export function initDataStorage(): IDataStorage {
       new InMemoryDataSource<Profile>()
     ),
     mt: new InMemoryMerkleTreeStorage(40),
-
     states: new EthStateStorage(defaultEthConnectionConfig),
   };
 

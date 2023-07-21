@@ -3,19 +3,22 @@ import { CHAIN_NAMESPACES, WALLET_ADAPTERS } from "@web3auth/base";
 import { Web3AuthOptions } from "@web3auth/modal";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { ethers } from "ethers";
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 
-const WEB3_AUTH_CLIENT_ID = process.env
-  .NEXT_PUBLIC_WEB3_AUTH_CLIENT_ID as string;
+const WEB3_AUTH_CLIENT_ID =
+  "BPXAZCxv422QTpzi3FxWvXOSW2qfccQxnJibkLBvIcCaZtBhbA2X0oneVC0R8xk5EmhqRbMYwFYUF678J4qKaqg";
 
 export async function initSafeAuthKit() {
+  const chainConfig = {
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x5",
+    rpcTarget: "https://rpc.ankr.com/eth_goerli",
+  };
+
   const options: Web3AuthOptions = {
     clientId: WEB3_AUTH_CLIENT_ID,
     web3AuthNetwork: "testnet",
-    chainConfig: {
-      chainNamespace: CHAIN_NAMESPACES.EIP155,
-      chainId: "0x5",
-      rpcTarget: "https://rpc.ankr.com/eth_goerli",
-    },
+    chainConfig,
     uiConfig: {
       theme: "dark",
       loginMethodsOrder: ["google", "facebook"],
@@ -34,9 +37,13 @@ export async function initSafeAuthKit() {
     },
   };
 
+  const privateKeyProvider = new EthereumPrivateKeyProvider({
+    config: { chainConfig },
+  });
+
   const openloginAdapter = new OpenloginAdapter({
     loginSettings: {
-      mfaLevel: "mandatory",
+      mfaLevel: "none",
     },
     adapterSettings: {
       uxMode: "popup",
@@ -44,6 +51,7 @@ export async function initSafeAuthKit() {
         name: "Safe",
       },
     },
+    privateKeyProvider,
   });
 
   const web3AuthConfig: Web3AuthConfig = {
