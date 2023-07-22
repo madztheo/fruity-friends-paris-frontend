@@ -10,6 +10,7 @@ import {
   useConnect,
   useDisconnect,
 } from "wagmi";
+import axios from "axios"
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -30,9 +31,22 @@ export default function Login() {
 
   useEffect(() => {
     if (isClientConnected) {
+      console.log(address)
+        let data = new FormData();
+        data.append('address', address as string);
+
+        try {
+          axios.post('http://localhost:8080/api/person', 
+            data
+          )
+        } catch(err) {
+          console.log("Already registered")
+        }
+        
       setTimeout(() => router.push("/profile"), 2000);
     }
   }, [isClientConnected]);
+  
 
   return (
     <div className={styles.container}>
@@ -53,7 +67,8 @@ export default function Login() {
                   <Button
                     text="Connect"
                     key={connector.id}
-                    onClick={() => connect({ connector })}
+                    onClick={() => connect({ connector })
+                    }
                   />
                 );
               })}

@@ -34,13 +34,13 @@ const config = createConfig({
 
  
 
-// export const UserContext = createContext<{
-//   user: Web3AuthModalPack | null;
-//   setUser: (user: Web3AuthModalPack) => void;
-// }>({
-//   user: null,
-//   setUser: () => {},
-// });
+export const UserContext = createContext<{
+  user: string;
+  setUser: (user: string) => void;
+}>({
+  user: "",
+  setUser: () => {},
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
