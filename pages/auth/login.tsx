@@ -13,7 +13,6 @@ import {
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-
   const [isClientConnected, setIsClientConnected] = useState(false);
   const {
     address,

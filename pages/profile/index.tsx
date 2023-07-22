@@ -4,6 +4,9 @@ import { VerifyButtons } from "@/components/verify-buttons/VerifyButtons";
 import { Button } from "@/components/button/Button";
 import { useDisconnect } from "wagmi";
 import { useRouter } from "next/router";
+import { resetXMTPClient } from "@/utils/xmtp";
+import { PolygonIdPopup } from "@/components/popup/polygon-id-popup/PolygonIdPopup";
+import { useState } from "react";
 
 export default function Profile() {
   const { disconnectAsync } = useDisconnect();
@@ -22,6 +25,7 @@ export default function Profile() {
           text="Log out"
           onClick={async () => {
             await disconnectAsync();
+            resetXMTPClient();
             router.replace("/auth/login");
           }}
         />

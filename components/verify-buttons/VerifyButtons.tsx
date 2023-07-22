@@ -4,22 +4,30 @@ import cn from "classnames";
 import { clientSideRequest } from "@/utils/api";
 import { useState } from "react";
 import { Button } from "../button/Button";
+import { PolygonIdPopup } from "../popup/polygon-id-popup/PolygonIdPopup";
 
 export function VerifyButtons({ className = "" }: { className?: string }) {
   const [loading, setLoading] = useState(false);
+  const [polygonIdPopupVisible, setPolygonIdPopupVisible] = useState(false);
+  const [request, setRequest] = useState<any>();
 
   const onVerifyWithPolygonID = async () => {
     setLoading(true);
-    const { url } = await clientSideRequest(
-      "/api/polygon-id/request/deep-link",
-      {}
-    );
-    window.location.href = url;
+    const result = await clientSideRequest("/api/polygon-id/request", {});
+    setRequest(result);
+    setPolygonIdPopupVisible(true);
     setLoading(false);
   };
 
   return (
     <div className={cn(className, styles.container)}>
+      <PolygonIdPopup
+        visible={polygonIdPopupVisible}
+        onClose={() => {
+          setPolygonIdPopupVisible(false);
+        }}
+        request={request}
+      />
       <IDKitWidget
         app_id={process.env.NEXT_PUBLIC_WLD_CLIENT_ID!} // obtained from the Developer Portal
         action="humancheck" // this is your action name from the Developer Portal

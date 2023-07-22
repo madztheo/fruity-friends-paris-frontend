@@ -1,7 +1,7 @@
 import { Client } from "@xmtp/xmtp-js";
 import { Signer } from "ethers";
 
-let xmtp: Client;
+let xmtp: Client | undefined;
 
 export async function initXMTPClient(signer: Signer) {
   if (xmtp) {
@@ -9,6 +9,10 @@ export async function initXMTPClient(signer: Signer) {
   }
   xmtp = await Client.create(signer);
   return xmtp;
+}
+
+export function resetXMTPClient() {
+  xmtp = undefined;
 }
 
 export async function initConversation(xmtp: Client, to: string) {

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { Message } from "@/components/message/Message";
 import { getConversation, initXMTPClient } from "@/utils/xmtp";
 import { useEthersSigner } from "@/utils/wagmi-to-ethers";
+import { useAccount } from "wagmi";
 
 export default function Conversation() {
   const [sending, setSending] = useState(false);
@@ -15,6 +16,7 @@ export default function Conversation() {
   const router = useRouter();
   const { address } = router.query;
   const signer = useEthersSigner();
+  const { address: connnectedUserAddr } = useAccount();
   const [messages, setMessages] = useState<
     {
       from: string;
@@ -32,40 +34,46 @@ export default function Conversation() {
       const conversation = await getConversation(xmtpClient, address as string);
       if (conversation) {
         const messages = await conversation.messages();
-        /*setMessages(messages.map((message) => ({
-        })));*/
+        if (messages) {
+          setMessages(
+            messages.map((message) => ({
+              from: message.senderAddress,
+              date: message.sent,
+              content: message.content,
+            }))
+          );
+          console.log(messages);
+        }
       }
     })();
-  });
+  }, [signer]);
 
   const onSend = async () => {
     try {
       if (!signer) {
         return;
       }
+      setMessage("");
       const xmtpClient = await initXMTPClient(signer);
       setSending(true);
-
-      ///await wait(1000);
+      console.log(connnectedUserAddr);
+      const conversation = await getConversation(xmtpClient, address as string);
+      if (!conversation) {
+        return;
+      }
+      await conversation.send(message);
       setMessages((prev) => [
         ...prev,
         {
-          from: "me",
+          from: connnectedUserAddr as string,
           content: message,
           date: new Date(),
         },
       ]);
       setSending(false);
-      await wait(2000);
-      setMessages((prev) => [
-        ...prev,
-        {
-          from: "Jane",
-          content: "Not interested",
-          date: new Date(),
-        },
-      ]);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
     setSending(false);
   };
 
@@ -90,7 +98,7 @@ export default function Conversation() {
               key={index}
               content={message.content}
               date={message.date}
-              isCurrentUser={message.from === "me"}
+              isCurrentUser={message.from === connnectedUserAddr}
             />
           ))}
         </div>

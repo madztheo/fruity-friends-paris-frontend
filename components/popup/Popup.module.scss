@@ -1,0 +1,73 @@
+@import "../../styles/constants.scss";
+
+@keyframes containerAnim {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popupAnim {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.container {
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: containerAnim 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  position: fixed;
+  z-index: 10000;
+  overflow-y: scroll;
+  padding: 40px;
+  @media (max-width: $mobileBreakpoint) {
+    padding: 10px;
+  }
+  &.blur {
+    backdrop-filter: blur(15px);
+  }
+  .popup {
+    animation: popupAnim 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    min-width: 500px;
+    max-width: 90%;
+    background-color: white;
+    padding: 40px 40px;
+    position: relative;
+    border-radius: 20px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: $mobileBreakpoint) {
+      min-width: 0;
+      padding: 20px 30px;
+      width: 100%;
+    }
+    .title {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: $black;
+      text-align: center;
+      max-width: 500px;
+    }
+    .subtitle {
+      color: $darkGray;
+      margin: 20px 0;
+      text-align: center;
+      max-width: 500px;
+    }
+    .content {
+      width: 100%;
+    }
+  }
+}

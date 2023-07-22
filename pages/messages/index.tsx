@@ -47,12 +47,6 @@ export default function Home() {
           const conversations = await getAllConversations(xmtpClient);
           if (conversations && conversations.length > 0) {
             setConversations(conversations);
-          } else {
-            const conversation = await initConversation(
-              xmtpClient,
-              "0x14bD21Bd869beb87A5910421D5ce29c972905a37"
-            );
-            setConversations([conversation]);
           }
         }
       } catch (error) {
