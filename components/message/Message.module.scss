@@ -1,0 +1,53 @@
+@import "../../styles/constants.scss";
+
+.container {
+  width: 100%;
+  display: flex;
+  &.focused {
+    .content {
+      flex-direction: row-reverse;
+      margin-left: auto;
+      .message {
+        background-color: $primaryColor;
+        .message__value {
+          color: white;
+        }
+        .time {
+          color: white;
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+  .content {
+    width: 100%;
+    max-width: 70%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    .picture {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      min-height: 40px;
+      border-radius: 50%;
+      background-color: $secondaryColor;
+    }
+    .message {
+      border-radius: 5px;
+      padding: 10px 15px;
+      min-width: 100px;
+      background-color: #e3e3e3;
+      .message__value {
+        color: $black;
+        font-size: 1em;
+      }
+      .time {
+        text-align: right;
+        color: $black;
+        opacity: 0.5;
+        font-size: 0.7em;
+      }
+    }
+  }
+}

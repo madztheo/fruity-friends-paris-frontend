@@ -1,7 +1,12 @@
 import Link from "next/link";
 import styles from "./BottomNavbar.module.scss";
 import cn from "classnames";
-import { MessagesIcon, PeopleIcon, ProfileIcon } from "../icons/Icons";
+import {
+  MessagesIcon,
+  PeopleIcon,
+  ProfileIcon,
+  StackIcon,
+} from "../icons/Icons";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -24,7 +29,7 @@ export function BottomNavbar({ className }: { className?: string }) {
           [styles.active]: router.asPath === "/",
         })}
       >
-        <PeopleIcon className={styles.button__icon} />
+        <StackIcon className={styles.button__icon} />
       </Link>
       <Link
         href="/messages"

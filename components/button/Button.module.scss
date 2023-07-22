@@ -1,7 +1,7 @@
 @import "../../styles/constants.scss";
 
 .button {
-  padding: 10px 30px;
+  padding: 15px 30px;
   border: none;
   cursor: pointer;
   transition: 200ms ease;
@@ -20,9 +20,7 @@
     margin: 0;
     white-space: pre-wrap;
     font-weight: 600;
-    @media (max-width: $mobileBreakpoint) {
-      font-size: 0.9em;
-    }
+    font-size: 1em;
   }
   .button__icon {
     height: 20px;

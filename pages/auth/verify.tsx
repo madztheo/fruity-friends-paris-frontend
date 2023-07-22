@@ -7,6 +7,20 @@ import { clientSideRequest } from "@/utils/api";
 export default function Worldcoin() {
   const [loading, setLoading] = useState(false);
 
+  const onVerifyWithPolygonID = async () => {
+    setLoading(true);
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/polygon-id/sign-in/deeplink`
+    );
+    if (response.ok) {
+      const { url } = await response.json();
+      window.open(url);
+    } else {
+      console.log(await response.text());
+    }
+    setLoading(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -36,12 +50,19 @@ export default function Worldcoin() {
                 setLoading(true);
                 open();
               }}
-              text="I'm not a robot"
+              text="Verify with Worldcoin"
               loading={loading}
-              loadingText="Making sure..."
+              loadingText="Verifying..."
             />
           )}
         </IDKitWidget>
+        <Button
+          className={styles.button}
+          text="Verify with Polygon ID"
+          loadingText="Verifying..."
+          loading={loading}
+          onClick={onVerifyWithPolygonID}
+        />
       </div>
     </div>
   );

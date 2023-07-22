@@ -31,7 +31,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isClientConnected) {
-      setTimeout(() => router.push("/messages"), 2000);
+      setTimeout(() => router.push("/profile"), 2000);
     }
   }, [isClientConnected]);
 
@@ -55,9 +55,7 @@ export default function Login() {
                     text="Connect"
                     key={connector.id}
                     onClick={() => connect({ connector })}
-                  >
-                    {connector.name}
-                  </Button>
+                  />
                 );
               })}
             </div>

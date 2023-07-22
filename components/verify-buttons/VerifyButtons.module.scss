@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  .button {
+    width: 100%;
+    max-width: 200px;
+    &:first-child {
+      background-color: black;
+    }
+    &:last-child {
+      background-color: #8544f5;
+    }
+  }
+}

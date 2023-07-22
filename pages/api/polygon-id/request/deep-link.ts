@@ -8,9 +8,15 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
-    const request = getRequestBody();
-    const encoded = Base64.encode(JSON.stringify(request));
-    res.status(200).json({ url: `iden3comm://?i_m=${encoded}` });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/polygon-id/sign-in/deeplink`
+    );
+    if (response.ok) {
+      const encoded = Base64.encode(JSON.stringify(await response.json()));
+      res.status(200).json({ url: `iden3comm://?i_m=${encoded}` });
+    } else {
+      res.status(400).json({ error: "Error fetching deeplink" });
+    }
   } catch (error: any) {
     console.error(error);
     res.status(400).json(error);
