@@ -38,7 +38,7 @@ export async function initSafeAuthKit() {
   };
 
   const privateKeyProvider = new EthereumPrivateKeyProvider({
-    config: { chainConfig },
+    config: { chainConfig } as any,
   });
 
   const openloginAdapter = new OpenloginAdapter({
