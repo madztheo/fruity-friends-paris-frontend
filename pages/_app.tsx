@@ -4,7 +4,14 @@ import Head from "next/head";
 
 import { useEffect, useState, createContext, useContext } from "react";
 
-import { WagmiConfig, createConfig, configureChains, useAccount, useConnect, useDisconnect } from "wagmi";
+import {
+  WagmiConfig,
+  createConfig,
+  configureChains,
+  useAccount,
+  useConnect,
+  useDisconnect,
+} from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
@@ -13,7 +20,10 @@ import { publicProvider } from "wagmi/providers/public";
 import Web3AuthConnectorInstance from "../utils/web3AuthConnector";
 
 // Configure chains & providers with the Public provider.
-const { chains, publicClient, webSocketPublicClient } = configureChains([goerli, mainnet, polygonMumbai ], [publicProvider()]);
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  [goerli, mainnet, polygonMumbai],
+  [publicProvider()]
+);
 
 // Set up client
 const config = createConfig({
@@ -31,9 +41,6 @@ const config = createConfig({
   webSocketPublicClient,
 });
 
-
- 
-
 export const UserContext = createContext<{
   user: string;
   setUser: (user: string) => void;
@@ -46,10 +53,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={config}>
       {/* <UserContext.Provider value={{ user, setUser: (value) => setUser(value) }}> */}
-        <Head>
-          <title>Fruity Friends</title>
-        </Head>
-        <Component {...pageProps} />
+      <Head>
+        <title>Fruity Friends</title>
+      </Head>
+      <Component {...pageProps} />
       {/* </UserContext.Provider> */}
     </WagmiConfig>
   );

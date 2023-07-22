@@ -11,6 +11,7 @@ import {
   useDisconnect,
 } from "wagmi";
 import axios from "axios";
+import { clientSideRequest } from "@/utils/api";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -30,19 +31,20 @@ export default function Login() {
   }, [isConnectedFromWagmi]);
 
   useEffect(() => {
-    if (isClientConnected) {
-      console.log(address);
-      let data = new FormData();
-      data.append("address", address as string);
-
-      try {
-        axios.post("http://localhost:8080/api/person", data);
-      } catch (err) {
-        console.log("Already registered");
+    (async () => {
+      if (isClientConnected) {
+        const { user } = await clientSideRequest("/api/user/get-by-address", {
+          address,
+        });
+        if (!user) {
+          const createdUser = await clientSideRequest("/api/user/create", {
+            address,
+          });
+          console.log(createdUser);
+        }
+        setTimeout(() => router.push("/profile"), 2000);
       }
-
-      setTimeout(() => router.push("/profile"), 2000);
-    }
+    })();
   }, [isClientConnected]);
 
   return (

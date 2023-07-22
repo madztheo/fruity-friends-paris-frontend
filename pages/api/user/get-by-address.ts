@@ -1,15 +1,14 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getRequestBody } from "@/utils/polygon-id";
-import { Base64 } from "js-base64";
 import { User } from "@/types";
 import { makeRequest } from "@/utils/api";
-import { getRandomImagePath } from "@/utils";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    | User
+    | {
+        user: User | undefined;
+      }
     | {
         error: any;
       }
@@ -17,12 +16,10 @@ export default async function handler(
 ) {
   try {
     const { address } = req.body;
-    const user: User = await makeRequest("/api/person", "POST", {
-      address,
-      picture: getRandomImagePath(),
+    const users: User[] = await makeRequest("/api/person", "GET");
+    res.status(200).json({
+      user: users.find((x) => x.address === address),
     });
-    console.log(user);
-    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });

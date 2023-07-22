@@ -5,7 +5,7 @@ import { CheckmarkIcon, CloseIcon } from "../icons/Icons";
 import axios from "axios";
 import { UserContext } from "@/pages/_app";
 import { useContext } from "react";
-import pineapple from "@/img/pineapple_0ec73f1f-2dbb-48bb-89f8-dfe9df5b0c6b.jpg";
+import pineapple from "@/public/img/pineapple_0ec73f1f-2dbb-48bb-89f8-dfe9df5b0c6b.jpg";
 
 export function ProfileCard({
   className,

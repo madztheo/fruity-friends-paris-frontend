@@ -7,29 +7,33 @@ import { useRouter } from "next/router";
 import { resetXMTPClient } from "@/utils/xmtp";
 import { EditIcon } from "@/components/icons/Icons";
 import { formatAddress } from "@/utils";
-import lemon from "@/img/lemon_33bcd234-d7a7-4947-82dd-44ccf6017a6a.jpg";
+import lemon from "@/public/img/lemon_33bcd234-d7a7-4947-82dd-44ccf6017a6a.jpg";
 import Image from "next/image";
+import { useUser } from "@/utils/hook";
 
 export default function Profile() {
   const { disconnectAsync } = useDisconnect();
   const router = useRouter();
   const { address } = useAccount();
+  const user = useUser();
 
   return (
     <MainLayout className={styles.container} title="My profile">
       <div className={styles.content}>
         <div className={styles.picture__container}>
           <div className={styles.picture}>
-            <Image
-              src={lemon}
-              alt=""
-              fill
-              style={{
-                objectFit: "cover",
-              }}
-            />
+            {user && user.picture && (
+              <Image
+                src={user?.picture}
+                alt=""
+                fill
+                style={{
+                  objectFit: "cover",
+                }}
+              />
+            )}
           </div>
-          <p className={styles.name}>John</p>
+          <p className={styles.name}>{user?.name}</p>
           <p className={styles.address}>{formatAddress(address as string)}</p>
           <div className={styles.verified__icons}></div>
         </div>

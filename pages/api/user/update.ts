@@ -16,7 +16,6 @@ export default async function handler(
 ) {
   try {
     const { id } = req.body;
-    delete req.body.id;
     const user: User = await makeRequest(`/api/person/${id}`, "PUT", req.body);
     res.status(200).json(user);
   } catch (error) {

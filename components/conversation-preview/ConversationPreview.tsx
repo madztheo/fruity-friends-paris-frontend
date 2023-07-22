@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { formatAddress } from "@/utils";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
-import strawberry from "@/img/strawberries_9f3faa73-9cf4-4962-ab94-9b9935d82006.jpg";
+import strawberry from "@/public/img/strawberries_9f3faa73-9cf4-4962-ab94-9b9935d82006.jpg";
 
 export function ConversationPreview({
   className,

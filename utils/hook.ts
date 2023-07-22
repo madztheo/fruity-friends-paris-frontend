@@ -1,5 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { clientSideRequest } from "./api";
+import { useRouter } from "next/router";
+import { User } from "@/types";
+import { useAccount } from "wagmi";
 
 export function useLocalStorage(key: string, initialValue: any) {
   const [storedValue, setStoredValue] = useState(() => {
@@ -151,4 +155,36 @@ export function useOnScreen(ref: any) {
   }, [observer]);
 
   return isIntersecting;
+}
+
+export function useUser() {
+  const { address } = useAccount();
+  const [user, setUser] = useState<User>();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (address) {
+      console.log(address);
+      clientSideRequest("/api/user/get-by-address", {
+        address,
+      }).then(
+        ({ user: usr }) => {
+          console.log(usr);
+          if (usr) {
+            setUser(usr);
+          } else {
+            router.replace("/auth/login");
+          }
+        },
+        (err) => {
+          console.log(err);
+          router.replace("/auth/login");
+        }
+      );
+    } else {
+      router.replace("/auth/login");
+    }
+  }, [address]);
+
+  return user;
 }
