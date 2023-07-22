@@ -16,7 +16,6 @@ export function ProfileCard({
 }: {
   className?: string;
   name?: string;
-  id: string;
   age?: number;
   description?: string;
   image?: StaticImageData | string;
@@ -24,14 +23,14 @@ export function ProfileCard({
   const { user, setUser } = useContext(UserContext);
 
   const like = () => {
-    let data = new FormData();
+    /*let data = new FormData();
     data.append('from', user);
     data.append('to', to);
 
     axios.post('/api/like', {
       data
-    })
-  }
+    })*/
+  };
 
   return (
     <div className={cn(styles.container, className)}>
