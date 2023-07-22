@@ -2,8 +2,9 @@ import { Client } from "@xmtp/xmtp-js";
 import { Signer } from "ethers";
 
 export async function initXMTPClient(signer: Signer) {
-  const xmtp = await Client.create(signer);
-  return xmtp;
+  console.log(signer)
+  // const xmtp = await Client.create(signer);
+  // return xmtp;
 }
 
 export async function initConversation(xmtp: Client, to: string) {

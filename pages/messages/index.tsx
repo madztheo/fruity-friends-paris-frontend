@@ -3,8 +3,9 @@ import styles from "@/styles/Home.module.scss";
 import { ProfileCard } from "@/components/profile-card/ProfileCard";
 import { MainLayout } from "@/layouts/main-layout/MainLayout";
 import { ConversationPreview } from "@/components/conversation-preview/ConversationPreview";
-import { UserContext } from "../_app";
-import { useContext, useEffect } from "react";
+// import { UserContext } from "../_app";
+import { useContext, useEffect, useState } from "react";
+import { WagmiConfig, createConfig, configureChains, useAccount, useConnect, useDisconnect } from "wagmi";
 
 const MESSAGES = [
   {
@@ -28,15 +29,21 @@ const MESSAGES = [
 ];
 
 export default function Home() {
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
+  const { address, connector, isConnected: isConnectedFromWagmi } = useAccount();
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    setIsConnected(isConnectedFromWagmi);
+  }, [isConnectedFromWagmi]);
+
+  // useEffect(() => {
+  //   // console.log(user);
+  // }, [user]);
 
   return (
     <MainLayout title="My conversations">
-      {user ? "hey" : "no user"}
+      {isConnected ? "hey" : "no user"}
       {/* <div className={styles.container}>
         {MESSAGES.map((message, index) => (
           <ConversationPreview

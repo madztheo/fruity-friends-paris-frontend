@@ -1,60 +1,58 @@
 import { Button } from "@/components/button/Button";
 import styles from "../../styles/auth/Login.module.scss";
 import { useState, useEffect, useContext } from "react";
-import { UserContext } from "../_app";
-import { initSafeAuthKit } from "../../utils/safe-auth-kit";
+
+import { useRouter } from "next/router";
+import { WagmiConfig, createConfig, configureChains, useAccount, useConnect, useDisconnect } from "wagmi";
+
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-  const { user, setUser } = useContext(UserContext);
-  const [web3AuthModalPack, setWeb3AuthModalPack] = useState<any>(null);
+
+  const [isClientConnected, setIsClientConnected] = useState(false);
+  const { address, connector, isConnected: isConnectedFromWagmi } = useAccount();
+  const { connect, connectors, error } = useConnect();
+  const { disconnect } = useDisconnect();
+
+  const router = useRouter();
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
-
-  const init = async () => {
-    const data = await initSafeAuthKit();
-    setWeb3AuthModalPack(data);
-  };
+    setIsClientConnected(isConnectedFromWagmi);
+  }, [isConnectedFromWagmi]);
 
   useEffect(() => {
-    init();
-  }, []);
+  if (isClientConnected) {setTimeout(() => router.push("/messages"), 2000)}
 
-  const onSignIn = async () => {
-    const data = await web3AuthModalPack.signIn();
-    setUser(data);
-  };
+  }, [isClientConnected]);
 
-  const onSignOut = async () => {
-    await web3AuthModalPack.signOut();
-    setUser(null);
-  };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <p className={styles.title}>Fruity Friends</p>
-        {user ? (
-          <Button
-            className={styles.button}
-            theme="primary"
-            text="Sign out"
-            onClick={onSignOut}
-            loading={loading}
-            loadingText="Connecting..."
-          />
-        ) : (
-          <Button
-            className={styles.button}
-            theme="primary"
-            text="Sign in"
-            onClick={onSignIn}
-            loading={loading}
-            loadingText="Connecting..."
-          />
-        )}
+          <div className="main">
+          {isClientConnected ?
+            <div className="main">
+              <div className="title">Connected to {connector?.name}</div>
+              <div>{address}</div>
+              <Button text="Disconnect" onClick={disconnect as any}>
+                
+              </Button>
+              Redirecting...
+            </div>
+            :
+            <div>
+              {connectors.map((connector) => {
+              return (
+                <Button text="Connect" key={connector.id} onClick={() => connect({ connector })}>
+                  {connector.name}
+                </Button>
+              );
+            })}
+            </div>
+          }
+          {error && <div>{error.message}</div>}
+        </div>
       </div>
     </div>
   );
