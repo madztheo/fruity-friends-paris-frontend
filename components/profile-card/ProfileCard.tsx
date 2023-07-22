@@ -26,8 +26,8 @@ export function ProfileCard({
   const onLike = async () => {
     try {
       const like: Like = await clientSideRequest("/api/like/send", {
-        from: connectedUser?.address,
-        to: user.address,
+        from: connectedUser?._id,
+        to: user._id,
       });
       if (like.match) {
         onMatch(user);

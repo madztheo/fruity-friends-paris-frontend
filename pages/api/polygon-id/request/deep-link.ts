@@ -8,8 +8,9 @@ export default async function handler(
   res: NextApiResponse<any>
 ) {
   try {
+    const { user_id } = req.body;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/polygon-id/sign-in/deeplink`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/polygon-id/sign-in/deeplink?user_id=${user_id}`
     );
     if (response.ok) {
       const encoded = Base64.encode(JSON.stringify(await response.json()));

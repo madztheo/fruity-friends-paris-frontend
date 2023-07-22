@@ -1,3 +1,5 @@
+import { User } from "@/types";
+import { makeRequest } from "@/utils/api";
 import { getRedisClient } from "@/utils/redis";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -10,6 +12,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<VerifyReply>
 ) {
+  const { user_id } = req.body;
   const reqBody = {
     merkle_root: req.body.merkle_root,
     nullifier_hash: req.body.nullifier_hash,
@@ -32,7 +35,9 @@ export default async function handler(
   if (response.status == 200) {
     // this is where you should perform backend actions based on the verified credential
     // i.e. setting a user as "verified" in a database
-
+    await makeRequest(`/api/person/${user_id}`, "PUT", {
+      isWorldcoinVerified: true,
+    });
     res.status(response.status).send({ code: "success" });
   } else {
     // return the error code and detail from the World ID /verify endpoint to our frontend
