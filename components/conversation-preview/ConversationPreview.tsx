@@ -4,13 +4,17 @@ import cn from "classnames";
 import { useEffect, useState } from "react";
 import { formatAddress } from "@/utils";
 import Link from "next/link";
+import Image, { StaticImageData } from "next/image";
+import strawberry from "@/img/strawberries_9f3faa73-9cf4-4962-ab94-9b9935d82006.jpg";
 
 export function ConversationPreview({
   className,
   conversation,
+  image = strawberry,
 }: {
   className?: string;
   conversation: Conversation;
+  image?: StaticImageData | string;
 }) {
   const [lastMessage, setLastMessage] = useState("");
 
@@ -30,7 +34,16 @@ export function ConversationPreview({
       href={`/messages/${conversation.peerAddress}`}
       className={cn(className, styles.container)}
     >
-      <div className={styles.profile__pic}></div>
+      <div className={styles.profile__pic}>
+        <Image
+          src={strawberry}
+          fill
+          alt=""
+          style={{
+            objectFit: "cover",
+          }}
+        />
+      </div>
       <div className={styles.content}>
         <p className={styles.name}>{formatAddress(conversation.peerAddress)}</p>
         <p className={styles.message}>{lastMessage}</p>

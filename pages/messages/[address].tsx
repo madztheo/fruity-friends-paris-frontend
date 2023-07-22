@@ -3,12 +3,13 @@ import styles from "../../styles/messages/Conversation.module.scss";
 import cn from "classnames";
 import { useEffect, useState } from "react";
 import { BackIcon, SendIcon } from "@/components/icons/Icons";
-import { formatAddress, wait } from "@/utils";
+import { formatAddress, getImageByIndex, wait } from "@/utils";
 import { useRouter } from "next/router";
 import { Message } from "@/components/message/Message";
 import { getConversation, initXMTPClient } from "@/utils/xmtp";
 import { useEthersSigner } from "@/utils/wagmi-to-ethers";
 import { useAccount } from "wagmi";
+import { TopBar } from "@/components/top-bar/TopBar";
 
 export default function Conversation() {
   const [sending, setSending] = useState(false);
@@ -80,18 +81,11 @@ export default function Conversation() {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.top}>
-          <button
-            className={styles.back__button}
-            onClick={() => {
-              router.back();
-            }}
-          >
-            <BackIcon className={styles.back__button__icon} />
-          </button>
-          <div className={styles.profile__pic}></div>
-          <p className={styles.name}>{formatAddress(address as string)}</p>
-        </div>
+        <TopBar
+          image={getImageByIndex(5)}
+          className={styles.top}
+          title={formatAddress(address as string)}
+        />
         <div className={styles.messages}>
           {messages.map((message, index) => (
             <Message

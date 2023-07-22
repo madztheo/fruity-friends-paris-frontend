@@ -32,6 +32,8 @@
       min-height: 40px;
       border-radius: 50%;
       background-color: $secondaryColor;
+      position: relative;
+      overflow: hidden;
     }
     .message {
       border-radius: 5px;

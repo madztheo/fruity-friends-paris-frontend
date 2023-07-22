@@ -11,18 +11,42 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 15px;
       .picture {
         width: 130px;
         height: 130px;
         border-radius: 50%;
         background-color: $secondaryColor;
+        margin-bottom: 20px;
+        position: relative;
+        overflow: hidden;
       }
       .name {
         font-size: 1.5em;
         color: $black;
         line-height: 1em;
         font-weight: 700;
+        margin-bottom: 5px;
+      }
+      .address {
+        font-size: 0.8em;
+        color: $darkGray;
+        line-height: 1em;
+        font-weight: 400;
+        margin-bottom: 15px;
+      }
+    }
+    .action__buttons {
+      display: flex;
+      align-items: center;
+      align-items: center;
+      .edit__button {
+        padding: 10px 20px;
+        .edit__button__icon {
+          width: 20px;
+          height: 20px;
+          margin-right: -5px;
+          fill: $primaryColor;
+        }
       }
     }
     .verify__buttons {
