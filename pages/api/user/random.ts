@@ -8,7 +8,7 @@ import { makeRequest } from "@/utils/api";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<
-    | User
+    | { user: User | undefined }
     | {
         error: any;
       }
@@ -16,8 +16,10 @@ export default async function handler(
 ) {
   try {
     const { id } = req.body;
-    const user: User = await makeRequest(`/api/person/random/${id}`, "GET");
-    res.status(200).json(user);
+    const users: User[] = await makeRequest(`/api/person/random/${id}`, "GET");
+    res.status(200).json({
+      user: users && users.length > 0 ? users[0] : undefined,
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({ error });

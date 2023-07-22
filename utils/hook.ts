@@ -164,12 +164,10 @@ export function useUser() {
 
   useEffect(() => {
     if (address) {
-      console.log(address);
       clientSideRequest("/api/user/get-by-address", {
         address,
       }).then(
         ({ user: usr }) => {
-          console.log(usr);
           if (usr) {
             setUser(usr);
           } else {

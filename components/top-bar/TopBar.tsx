@@ -11,7 +11,7 @@ export function TopBar({
 }: {
   className?: string;
   title: string;
-  image: StaticImageData | string;
+  image: StaticImageData | string | undefined;
 }) {
   const router = useRouter();
   return (
@@ -25,14 +25,16 @@ export function TopBar({
         <BackIcon className={styles.back__button__icon} />
       </button>
       <div className={styles.profile__pic}>
-        <Image
-          src={image}
-          alt=""
-          fill
-          style={{
-            objectFit: "cover",
-          }}
-        />
+        {image && (
+          <Image
+            src={image}
+            alt=""
+            fill
+            style={{
+              objectFit: "cover",
+            }}
+          />
+        )}
       </div>
       <p className={styles.name}>{title}</p>
     </div>

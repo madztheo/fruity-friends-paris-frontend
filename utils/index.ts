@@ -36,7 +36,7 @@ export function getImageByIndex(index: number) {
 }
 
 export function getImageByIndexPath(index: number) {
-  const basePath = "https://fruity-friends-paris-frontend.vercel.app";
+  const basePath = "https://fruity-friends-paris-frontend.vercel.app/img";
   switch (index) {
     case 0:
       return `${basePath}/apple_14d9a77b-5dda-4435-a501-58fee28b2b34.jpg`;

@@ -36,7 +36,6 @@ export default function ProfileEdit() {
         description: form.bio,
         age: Number(form.age),
       });
-      console.log(updatedUser);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +46,7 @@ export default function ProfileEdit() {
     <div className={styles.container}>
       <div className={styles.content}>
         <TopBar
-          image={getImageByIndex(3)}
+          image={user?.picture}
           className={styles.top}
           title="Edit my profile"
         />

@@ -6,18 +6,27 @@ import { BackIcon, SendIcon } from "@/components/icons/Icons";
 import { formatAddress, getImageByIndex, wait } from "@/utils";
 import { useRouter } from "next/router";
 import { Message } from "@/components/message/Message";
-import { getConversation, initXMTPClient } from "@/utils/xmtp";
+import {
+  getConversation,
+  initConversation,
+  initXMTPClient,
+} from "@/utils/xmtp";
 import { useEthersSigner } from "@/utils/wagmi-to-ethers";
 import { useAccount } from "wagmi";
 import { TopBar } from "@/components/top-bar/TopBar";
+import { useUser } from "@/utils/hook";
+import { clientSideRequest } from "@/utils/api";
+import { User } from "@/types";
 
 export default function Conversation() {
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState("");
   const router = useRouter();
   const { address } = router.query;
+  const user = useUser();
   const signer = useEthersSigner();
-  const { address: connnectedUserAddr } = useAccount();
+  const connectedUser = useUser();
+  const [receiver, setReceiver] = useState<User>();
   const [messages, setMessages] = useState<
     {
       from: string;
@@ -25,6 +34,24 @@ export default function Conversation() {
       date: Date;
     }[]
   >([]);
+
+  useEffect(() => {
+    if (address) {
+      (async () => {
+        try {
+          const { user: usr } = await clientSideRequest(
+            "/api/user/get-by-address",
+            {
+              address,
+            }
+          );
+          setReceiver(usr);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [address]);
 
   useEffect(() => {
     (async () => {
@@ -43,8 +70,12 @@ export default function Conversation() {
               content: message.content,
             }))
           );
-          console.log(messages);
         }
+      } else {
+        const conversation = await initConversation(
+          xmtpClient,
+          address as string
+        );
       }
     })();
   }, [signer]);
@@ -57,7 +88,6 @@ export default function Conversation() {
       setMessage("");
       const xmtpClient = await initXMTPClient(signer);
       setSending(true);
-      console.log(connnectedUserAddr);
       const conversation = await getConversation(xmtpClient, address as string);
       if (!conversation) {
         return;
@@ -66,7 +96,7 @@ export default function Conversation() {
       setMessages((prev) => [
         ...prev,
         {
-          from: connnectedUserAddr as string,
+          from: connectedUser?.address as string,
           content: message,
           date: new Date(),
         },
@@ -82,9 +112,9 @@ export default function Conversation() {
     <div className={styles.container}>
       <div className={styles.content}>
         <TopBar
-          image={getImageByIndex(5)}
+          image={receiver?.picture}
           className={styles.top}
-          title={formatAddress(address as string)}
+          title={receiver?.name || ""}
         />
         <div className={styles.messages}>
           {messages.map((message, index) => (
@@ -92,7 +122,12 @@ export default function Conversation() {
               key={index}
               content={message.content}
               date={message.date}
-              isCurrentUser={message.from === connnectedUserAddr}
+              isCurrentUser={message.from === connectedUser?.address}
+              image={
+                message.from === connectedUser?.address
+                  ? user?.picture
+                  : receiver?.picture
+              }
             />
           ))}
         </div>

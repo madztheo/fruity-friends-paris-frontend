@@ -6,6 +6,9 @@ import { formatAddress } from "@/utils";
 import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 import strawberry from "@/public/img/strawberries_9f3faa73-9cf4-4962-ab94-9b9935d82006.jpg";
+import { useUser } from "@/utils/hook";
+import { User } from "@/types";
+import { clientSideRequest } from "@/utils/api";
 
 export function ConversationPreview({
   className,
@@ -17,6 +20,26 @@ export function ConversationPreview({
   image?: StaticImageData | string;
 }) {
   const [lastMessage, setLastMessage] = useState("");
+  const connectedUser = useUser();
+  const [receiver, setReceiver] = useState<User>();
+
+  useEffect(() => {
+    if (conversation) {
+      (async () => {
+        try {
+          const { user: usr } = await clientSideRequest(
+            "/api/user/get-by-address",
+            {
+              address: conversation.peerAddress,
+            }
+          );
+          setReceiver(usr);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, [conversation]);
 
   useEffect(() => {
     (async () => {
@@ -35,17 +58,19 @@ export function ConversationPreview({
       className={cn(className, styles.container)}
     >
       <div className={styles.profile__pic}>
-        <Image
-          src={strawberry}
-          fill
-          alt=""
-          style={{
-            objectFit: "cover",
-          }}
-        />
+        {receiver && receiver.picture && (
+          <Image
+            src={receiver?.picture}
+            fill
+            alt=""
+            style={{
+              objectFit: "cover",
+            }}
+          />
+        )}
       </div>
       <div className={styles.content}>
-        <p className={styles.name}>{formatAddress(conversation.peerAddress)}</p>
+        <p className={styles.name}>{receiver?.name}</p>
         <p className={styles.message}>{lastMessage}</p>
       </div>
     </Link>

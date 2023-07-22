@@ -1,3 +1,19 @@
+@import "./constants.scss";
+
 .profile__card {
   height: 100%;
+}
+
+.empty__deck {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    text-align: center;
+    font-size: 1.5em;
+    color: $darkGray;
+    font-weight: 700;
+    max-width: 70%;
+  }
 }

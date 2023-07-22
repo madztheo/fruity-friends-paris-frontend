@@ -7,6 +7,14 @@ const nextConfig = {
     }
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "fruity-friends-paris-frontend.vercel.app",
+      },
+    ],
+  },
 };
 
 module.exports = nextConfig;
