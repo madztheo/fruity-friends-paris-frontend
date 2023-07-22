@@ -5,7 +5,14 @@ import { MainLayout } from "@/layouts/main-layout/MainLayout";
 import { ConversationPreview } from "@/components/conversation-preview/ConversationPreview";
 // import { UserContext } from "../_app";
 import { useContext, useEffect, useState } from "react";
-import { WagmiConfig, createConfig, configureChains, useAccount, useConnect, useDisconnect } from "wagmi";
+import {
+  WagmiConfig,
+  createConfig,
+  configureChains,
+  useAccount,
+  useConnect,
+  useDisconnect,
+} from "wagmi";
 
 const MESSAGES = [
   {
@@ -30,7 +37,11 @@ const MESSAGES = [
 
 export default function Home() {
   // const { user, setUser } = useContext(UserContext);
-  const { address, connector, isConnected: isConnectedFromWagmi } = useAccount();
+  const {
+    address,
+    connector,
+    isConnected: isConnectedFromWagmi,
+  } = useAccount();
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
