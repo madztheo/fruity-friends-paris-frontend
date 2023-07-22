@@ -10,7 +10,7 @@ import {
   useConnect,
   useDisconnect,
 } from "wagmi";
-import axios from "axios"
+import axios from "axios";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -31,51 +31,40 @@ export default function Login() {
 
   useEffect(() => {
     if (isClientConnected) {
-      console.log(address)
-        let data = new FormData();
-        data.append('address', address as string);
+      console.log(address);
+      let data = new FormData();
+      data.append("address", address as string);
 
-        try {
-          axios.post('http://localhost:8080/api/person', 
-            data
-          )
-        } catch(err) {
-          console.log("Already registered")
-        }
-        
+      try {
+        axios.post("http://localhost:8080/api/person", data);
+      } catch (err) {
+        console.log("Already registered");
+      }
+
       setTimeout(() => router.push("/profile"), 2000);
     }
   }, [isClientConnected]);
-  
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <p className={styles.title}>Fruity Friends</p>
-        <div className="main">
-          {isClientConnected ? (
-            <div className="main">
-              <div className="title">Connected to {connector?.name}</div>
-              <div>{address}</div>
-              <Button text="Disconnect" onClick={disconnect as any}></Button>
-              Redirecting...
-            </div>
-          ) : (
-            <div>
-              {connectors.map((connector) => {
-                return (
-                  <Button
-                    text="Connect"
-                    key={connector.id}
-                    onClick={() => connect({ connector })
-                    }
-                  />
-                );
-              })}
-            </div>
-          )}
-          {error && <div>{error.message}</div>}
-        </div>
+        {isClientConnected ? (
+          <div className={styles.redirect__text}>Redirecting...</div>
+        ) : (
+          <div>
+            {connectors.map((connector) => {
+              return (
+                <Button
+                  text="Connect"
+                  key={connector.id}
+                  onClick={() => connect({ connector })}
+                />
+              );
+            })}
+          </div>
+        )}
+        {error && <div>{error.message}</div>}
       </div>
     </div>
   );

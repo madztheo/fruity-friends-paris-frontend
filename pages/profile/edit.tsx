@@ -10,6 +10,7 @@ export default function ProfileEdit() {
   const [form, setForm] = useState({
     name: "",
     bio: "",
+    age: "",
   });
 
   return (
@@ -28,6 +29,14 @@ export default function ProfileEdit() {
               setForm({ ...form, name: val });
             }}
             placeholder="Name"
+          />
+          <Input
+            containerClassName={styles.input__container}
+            value={form.age}
+            onChange={(val: string) => {
+              setForm({ ...form, age: val });
+            }}
+            placeholder="Age"
           />
           <Input
             containerClassName={styles.input__container}
