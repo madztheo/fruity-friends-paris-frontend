@@ -37,6 +37,24 @@
       color: white;
       margin: 0;
     }
+    .verified__icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      .verified__icon__container {
+        background-color: white;
+        padding: 5px;
+        border-radius: 50%;
+        .verified__icon {
+          position: relative;
+          width: 20px;
+          height: 20px;
+          min-width: 20px;
+          min-height: 20px;
+        }
+      }
+    }
     .description {
       font-size: 1em;
       font-weight: 400;

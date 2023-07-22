@@ -9,6 +9,8 @@ import pineapple from "@/public/img/pineapple_0ec73f1f-2dbb-48bb-89f8-dfe9df5b0c
 import { Like, User } from "@/types";
 import { clientSideRequest } from "@/utils/api";
 import { useUser } from "@/utils/hook";
+import polygonIdIcon from "@/public/img/logo/polygon_id_logo.svg";
+import worldcoinLogoIcon from "@/public/img/logo/worldcoin-logo.svg";
 
 export function ProfileCard({
   className,
@@ -53,7 +55,41 @@ export function ProfileCard({
         )}
       </div>
       <div className={styles.content}>
-        <p className={styles.title}>{user.name}</p>
+        <p className={styles.title}>
+          {user.name}, {user.age}
+        </p>
+        {user && (user.isPolygonIdVerified || user.isWorldcoinVerified) && (
+          <div className={styles.verified__icons}>
+            {user && user.isPolygonIdVerified && (
+              <div className={styles.verified__icon__container}>
+                <div className={styles.verified__icon}>
+                  <Image
+                    src={polygonIdIcon}
+                    alt=""
+                    fill
+                    style={{
+                      objectFit: "contain",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+            {user && user.isWorldcoinVerified && (
+              <div className={styles.verified__icon__container}>
+                <div className={styles.verified__icon}>
+                  <Image
+                    src={worldcoinLogoIcon}
+                    alt=""
+                    fill
+                    style={{
+                      objectFit: "contain",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
         <p className={styles.description}>{user.description}</p>
         <div className={styles.buttons}>
           <button className={styles.button} onClick={onNext}>

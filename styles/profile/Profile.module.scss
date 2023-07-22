@@ -35,6 +35,17 @@
         margin-bottom: 15px;
       }
     }
+    .verified__icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 20px 0;
+      .verified__icon {
+        position: relative;
+        width: 20px;
+        height: 20px;
+      }
+    }
     .action__buttons {
       display: flex;
       align-items: center;

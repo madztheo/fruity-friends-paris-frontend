@@ -10,6 +10,8 @@ import { formatAddress } from "@/utils";
 import lemon from "@/public/img/lemon_33bcd234-d7a7-4947-82dd-44ccf6017a6a.jpg";
 import Image from "next/image";
 import { useUser } from "@/utils/hook";
+import polygonIdIcon from "@/public/img/logo/polygon_id_logo.svg";
+import worldcoinLogoIcon from "@/public/img/logo/worldcoin-logo.svg";
 
 export default function Profile() {
   const { disconnectAsync } = useDisconnect();
@@ -35,7 +37,34 @@ export default function Profile() {
           </div>
           <p className={styles.name}>{user?.name}</p>
           <p className={styles.address}>{formatAddress(address as string)}</p>
-          <div className={styles.verified__icons}></div>
+          {user && (user.isPolygonIdVerified || user.isWorldcoinVerified) && (
+            <div className={styles.verified__icons}>
+              {user && user.isPolygonIdVerified && (
+                <div className={styles.verified__icon}>
+                  <Image
+                    src={polygonIdIcon}
+                    alt=""
+                    fill
+                    style={{
+                      objectFit: "contain",
+                    }}
+                  />
+                </div>
+              )}
+              {user && user.isWorldcoinVerified && (
+                <div className={styles.verified__icon}>
+                  <Image
+                    src={worldcoinLogoIcon}
+                    alt=""
+                    fill
+                    style={{
+                      objectFit: "contain",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
         <div className={styles.action__buttons}>
           <Button
