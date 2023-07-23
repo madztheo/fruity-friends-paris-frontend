@@ -17,6 +17,7 @@ import { TopBar } from "@/components/top-bar/TopBar";
 import { useUser } from "@/utils/hook";
 import { clientSideRequest } from "@/utils/api";
 import { User } from "@/types";
+import { DecodedMessage } from "@xmtp/xmtp-js";
 
 export default function Conversation() {
   const [sending, setSending] = useState(false);
@@ -27,13 +28,7 @@ export default function Conversation() {
   const signer = useEthersSigner();
   const connectedUser = useUser();
   const [receiver, setReceiver] = useState<User>();
-  const [messages, setMessages] = useState<
-    {
-      from: string;
-      content: string;
-      date: Date;
-    }[]
-  >([]);
+  const [messages, setMessages] = useState<DecodedMessage[]>([]);
 
   useEffect(() => {
     if (address) {
@@ -59,22 +54,21 @@ export default function Conversation() {
         return;
       }
       const xmtpClient = await initXMTPClient(signer);
-      const conversation = await getConversation(xmtpClient, address as string);
+      let conversation = await getConversation(xmtpClient, address as string);
       if (conversation) {
         const messages = await conversation.messages();
         if (messages) {
-          setMessages(
-            messages.map((message) => ({
-              from: message.senderAddress,
-              date: message.sent,
-              content: message.content,
-            }))
-          );
+          setMessages(messages);
         }
       } else {
-        const conversation = await initConversation(
-          xmtpClient,
-          address as string
+        conversation = await initConversation(xmtpClient, address as string);
+      }
+      for await (const message of await conversation.streamMessages()) {
+        if (message.senderAddress === connectedUser?.address) {
+          continue;
+        }
+        setMessages((prev) =>
+          prev.some((x) => x.id === message.id) ? prev : [...prev, message]
         );
       }
     })();
@@ -92,15 +86,8 @@ export default function Conversation() {
       if (!conversation) {
         return;
       }
-      await conversation.send(message);
-      setMessages((prev) => [
-        ...prev,
-        {
-          from: connectedUser?.address as string,
-          content: message,
-          date: new Date(),
-        },
-      ]);
+      const decodedMessage = await conversation.send(message);
+      setMessages((prev) => [...prev, decodedMessage]);
       setSending(false);
     } catch (error) {
       console.log(error);
@@ -121,10 +108,10 @@ export default function Conversation() {
             <Message
               key={index}
               content={message.content}
-              date={message.date}
-              isCurrentUser={message.from === connectedUser?.address}
+              date={message.sent}
+              isCurrentUser={message.senderAddress === connectedUser?.address}
               image={
-                message.from === connectedUser?.address
+                message.senderAddress === connectedUser?.address
                   ? user?.picture
                   : receiver?.picture
               }
